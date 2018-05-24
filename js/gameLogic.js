@@ -67,3 +67,62 @@ function iconSource(index) {
       break;
   }
 }
+
+//Timer logic
+let timer = document.getElementById("timer");
+let start = document.getElementById("start");
+let seconds = 0,
+  minutes = 0,
+  hours = 0,
+  t;
+
+function add() {
+  seconds++;
+  if (seconds >= 60) {
+    seconds = 0;
+    minutes++;
+    if (minutes >= 60) {
+      minutes = 0;
+      hours++;
+    }
+  }
+
+  timer.textContent =
+    (hours ? (hours > 9 ? hours : "0" + hours) : "00") +
+    ":" +
+    (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") +
+    ":" +
+    (seconds > 9 ? seconds : "0" + seconds);
+
+  timerFunc();
+}
+
+function timerFunc() {
+  t = setTimeout(add, 1000);
+}
+
+timerFunc();
+
+// Logic for number of moves user makes
+let moveCount = document.getElementById("moves");
+
+let cardDeck = document.getElementsByClassName("deck")[0];
+
+cardDeck.addEventListener("click", function() {
+  let x = moveCount.innerText;
+  x++;
+  moveCount.innerText = x;
+});
+
+// Logic for refresh button
+let refreshButton = document.getElementsByClassName("refresh")[0];
+
+refreshButton.addEventListener("click", function() {
+  iconMap = new Array(2, 2, 2, 2, 2, 2, 2, 2);
+  iconCount = 16;
+
+  for (let i = 0; i < cards.length; i++) {
+    cards[i].removeChild(cards[i].firstChild);
+    cards[i].innerHTML = '<i class="' + populateCard() + '"></i>';
+  }
+});
