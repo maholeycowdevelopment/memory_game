@@ -118,6 +118,15 @@ cardDeck.addEventListener("click", function() {
 let refreshButton = document.getElementsByClassName("refresh")[0];
 
 refreshButton.addEventListener("click", function() {
+  //TODO: Reset stars
+
+  timer.textContent = "00:00:00";
+  seconds = 0;
+  minutes = 0;
+  hours = 0;
+
+  moveCount.innerText = "0";
+
   iconMap = new Array(2, 2, 2, 2, 2, 2, 2, 2);
   iconCount = 16;
 
