@@ -14,6 +14,11 @@ let iconCount = 16;
 
 let numberOfCardsSelected = 0;
 
+let stars = document.getElementsByClassName("fa-star");
+stars[5].style.display = "none";
+stars[4].style.display = "none";
+stars[3].style.display = "none";
+
 // Randomly place icons in cards
 let cards = document.getElementsByClassName("card");
 
@@ -75,7 +80,6 @@ let seconds = 0,
   minutes = 0,
   hours = 0,
   t;
-let stars = document.getElementsByClassName("fa-star");
 
 function add() {
   seconds++;
@@ -89,11 +93,14 @@ function add() {
   }
 
   if (minutes === 1) {
-    stars[2].style.visibility = "hidden";
+    stars[2].style.display = "none";
+    stars[3].style.display = "inline-block";
   } else if (minutes === 2) {
-    stars[1].style.visibility = "hidden";
+    stars[1].style.display = "none";
+    stars[4].style.display = "inline-block";
   } else if (minutes > 2) {
-    stars[0].style.visibility = "hidden";
+    stars[0].style.display = "none";
+    stars[5].style.display = "inline-block";
   }
 
   timer.textContent =
