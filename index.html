@@ -13,60 +13,53 @@
   <header>
     <p>Memory Matcher Deluxe</p>
   </header>
-
+  <div class="overlay">
+    <div class="popup-container">
+      <p class="congrats">YOU WON!</p>
+      <button onclick="playAgain()">
+        <h2>Play Again</h2>
+      </button>
+    </div>
+  </div>
   <div class="utilities">
     <div class="rating">
       <i class="fa fa-star"></i>
       <i class="fa fa-star"></i>
       <i class="fa fa-star"></i>
       <!-- <i class="fa fa-star-o"></i>
-          <i class="fa fa-star-o"></i>
-          <i class="fa fa-star-o"></i> -->
+      <i class="fa fa-star-o"></i>
+      <i class="fa fa-star-o"></i> -->
     </div>
-
-    <div class="timer_section">
-      <h4>
-        <time id="timer">00:00:00</time>
-      </h4>
-    </div>
-
-    <div class="move_count">
-      <h4 id="moves">0</h4>
-    </div>
-
     <div class="refresh">
       <i class="fas fa-redo"></i>
     </div>
-
+    <div class="move_count">
+      <p>Number of Moves: </p>
+      <p id="moves">0</p>
+    </div>
+    <div class="timer_section">
+      <time id="timer">00:00:00</time>
+    </div>
   </div>
 
   <div class="deck">
-    <div class="row">
-      <div class="card"></div>
-      <div class="card"></div>
-      <div class="card"></div>
-      <div class="card"></div>
-    </div>
-    <div class="row">
-      <div class="card"></div>
-      <div class="card"></div>
-      <div class="card"></div>
-      <div class="card"></div>
-    </div>
-    <div class="row">
-      <div class="card"></div>
-      <div class="card"></div>
-      <div class="card"></div>
-      <div class="card"></div>
-    </div>
-    <div class="row">
-      <div class="card"></div>
-      <div class="card"></div>
-      <div class="card"></div>
-      <div class="card"></div>
-    </div>
+    <div class="card"></div>
+    <div class="card"></div>
+    <div class="card"></div>
+    <div class="card"></div>
+    <div class="card"></div>
+    <div class="card"></div>
+    <div class="card"></div>
+    <div class="card"></div>
+    <div class="card"></div>
+    <div class="card"></div>
+    <div class="card"></div>
+    <div class="card"></div>
+    <div class="card"></div>
+    <div class="card"></div>
+    <div class="card"></div>
+    <div class="card"></div>
   </div>
-
   <script src="js/gameLogic.js"></script>
 </body>
 
