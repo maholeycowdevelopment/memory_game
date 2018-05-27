@@ -12,6 +12,8 @@ let gamepad = "fa fa-gamepad";
 let iconMap = new Array(2, 2, 2, 2, 2, 2, 2, 2);
 let iconCount = 16;
 
+let numberOfCardsSelected = 0;
+
 // Randomly place icons in cards
 let cards = document.getElementsByClassName("card");
 
@@ -23,14 +25,12 @@ for (let i = 0; i < cards.length; i++) {
 function populateCard() {
   let picker = Math.floor(Math.random() * 8) + 1;
   picker--;
-  console.log(picker);
   while (iconMap[picker] == 0) {
     picker++;
     if (picker == 8) {
       picker = 0;
     }
   }
-  console.log(picker);
 
   iconMap[picker] -= 1;
   iconCount--;
@@ -68,13 +68,14 @@ function iconSource(index) {
   }
 }
 
-//Timer logic
+//Timer logic & Star rating logic
 let timer = document.getElementById("timer");
 let start = document.getElementById("start");
 let seconds = 0,
   minutes = 0,
   hours = 0,
   t;
+let stars = document.getElementsByClassName("fa-star");
 
 function add() {
   seconds++;
@@ -85,6 +86,14 @@ function add() {
       minutes = 0;
       hours++;
     }
+  }
+
+  if (minutes === 1) {
+    stars[2].style.visibility = "hidden";
+  } else if (minutes === 2) {
+    stars[1].style.visibility = "hidden";
+  } else if (minutes > 2) {
+    stars[0].style.visibility = "hidden";
   }
 
   timer.textContent =
@@ -134,4 +143,116 @@ refreshButton.addEventListener("click", function() {
     cards[i].removeChild(cards[i].firstChild);
     cards[i].innerHTML = '<i class="' + populateCard() + '"></i>';
   }
+
+  hideCards();
 });
+
+/* Logic manage game state */
+let cardHasBeenSelected = false;
+let cardOneIndex;
+let cardTwoIndex;
+let successfulMoves = 0;
+
+/* Make cards face down at start of game and add event listener*/
+let deckOfCardsList = document.getElementsByClassName("card");
+function hideCards() {
+  for (let i = 0; i < deckOfCardsList.length; i++) {
+    let cardIcon = deckOfCardsList[i].querySelector(".fa");
+    cardIcon.style.visibility = "hidden";
+    deckOfCardsList[i].style.backgroundColor = "#855E42";
+  }
+}
+hideCards();
+
+// Event listener logic for which card was clicked
+
+document
+  .getElementsByClassName("deck")[0]
+  .addEventListener("click", function() {
+    let clickedItem = event.target;
+    if (
+      clickedItem.className === "card" &&
+      clickedItem.style.visibility !== "visible" &&
+      numberOfCardsSelected < 2
+    ) {
+      numberOfCardsSelected++;
+      flipCardZ(clickedItem);
+      clickedItem.style.backgroundColor = "wheat";
+      let clickedItemIcon = clickedItem.querySelector(".fa");
+      clickedItemIcon.style.visibility = "visible";
+      if (numberOfCardsSelected < 2) {
+        cardOneIndex = indexOfHTMLCollection(deckOfCardsList, clickedItem);
+      } else {
+        cardTwoIndex = indexOfHTMLCollection(deckOfCardsList, clickedItem);
+        let cardEquality = areEqual();
+        setTimeout(leaveFlipped, 1000, cardEquality);
+        numberOfCardsSelected = 0;
+      }
+    }
+  });
+
+// Function that checks if selected cards are equal
+function areEqual() {
+  if (
+    deckOfCardsList[cardOneIndex].innerHTML ===
+    deckOfCardsList[cardTwoIndex].innerHTML
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+// Function that determines whether or not to leave cards flipped
+function leaveFlipped(equality) {
+  if (!equality) {
+    deckOfCardsList[cardOneIndex].querySelector(".fa").style.visibility =
+      "hidden";
+
+    deckOfCardsList[cardOneIndex].style.backgroundColor = "#855E42";
+
+    deckOfCardsList[cardTwoIndex].querySelector(".fa").style.visibility =
+      "hidden";
+
+    deckOfCardsList[cardTwoIndex].style.backgroundColor = "#855E42";
+
+    flipCardZ(deckOfCardsList[cardOneIndex]);
+    flipCardZ(deckOfCardsList[cardTwoIndex]);
+  } else {
+    successfulMatch(deckOfCardsList[cardOneIndex]);
+    successfulMatch(deckOfCardsList[cardTwoIndex]);
+    successfulMoves++;
+    hasWon();
+  }
+}
+
+// Function that determines if end of game has been reached.
+function hasWon() {
+  if (successfulMoves === 8) {
+    document.getElementsByClassName("overlay")[0].style.display = "flex";
+  }
+}
+
+// Custom function to get index of HTMLCollection
+function indexOfHTMLCollection(HtmlCollection, searchData) {
+  let index = 0;
+  while (HtmlCollection[index] !== searchData) {
+    index++;
+  }
+  return index;
+}
+
+// Styling function when card is flipped over
+function flipCardZ(targetCard) {
+  targetCard.classList.toggle("rotate-z");
+}
+
+// Styling function for successful matches
+function successfulMatch(targetCard) {
+  // some rewarding animation
+  targetCard.classList.toggle("successful-match");
+}
+
+function playAgain() {
+  location.reload();
+}
