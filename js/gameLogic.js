@@ -113,6 +113,8 @@ function timerFunc() {
 let refreshButton = document.getElementsByClassName("refresh")[0];
 
 refreshButton.addEventListener("click", function() {
+  location.reload();
+
   // //TODO: Reset stars
   // stars[5].style.display = "none";
   // stars[4].style.display = "none";
