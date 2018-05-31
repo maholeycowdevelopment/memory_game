@@ -89,8 +89,8 @@ time {
   border: 2px black solid;
   border-radius: 5%;
   background-color: wheat;
-  width: 85px;
-  height: 85px;
+  /*width: 85px;
+  height: 85px;*/
   align-content: center;
   -webkit-transition: all 0.75s ease;
   -moz-transition: all 0.75s ease;
@@ -186,4 +186,18 @@ time {
 
 button {
   margin-top: 15px;
+}
+
+@media only screen and (max-width: 400px) {
+  body,
+  header,
+  .deck {
+    max-width: 300px;
+  }
+
+  .card {
+    min-width: 20%;
+    height: auto;
+    font-size: 24px;
+  }
 }
