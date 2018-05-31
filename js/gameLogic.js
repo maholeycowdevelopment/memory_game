@@ -113,32 +113,26 @@ function timerFunc() {
 let refreshButton = document.getElementsByClassName("refresh")[0];
 
 refreshButton.addEventListener("click", function() {
-  //TODO: Reset stars
-  stars[5].style.display = "none";
-  stars[4].style.display = "none";
-  stars[3].style.display = "none";
-  stars[2].style.display = "inline-block";
-  stars[1].style.display = "inline-block";
-  stars[0].style.display = "inline-block";
-
-  timer.textContent = "00:00:00";
-  seconds = 0;
-  minutes = 0;
-  hours = 0;
-
-  moveCount.innerText = "0";
-
-  numberOfCardsSelected = 0;
-
-  iconMap = new Array(2, 2, 2, 2, 2, 2, 2, 2);
-  iconCount = 16;
-
-  for (let i = 0; i < cards.length; i++) {
-    cards[i].removeChild(cards[i].firstChild);
-    cards[i].innerHTML = '<i class="' + populateCard() + '"></i>';
-  }
-
-  hideCards();
+  // //TODO: Reset stars
+  // stars[5].style.display = "none";
+  // stars[4].style.display = "none";
+  // stars[3].style.display = "none";
+  // stars[2].style.display = "inline-block";
+  // stars[1].style.display = "inline-block";
+  // stars[0].style.display = "inline-block";
+  // timer.textContent = "00:00:00";
+  // seconds = 0;
+  // minutes = 0;
+  // hours = 0;
+  // moveCount.innerText = "0";
+  // numberOfCardsSelected = 0;
+  // iconMap = new Array(2, 2, 2, 2, 2, 2, 2, 2);
+  // iconCount = 16;
+  // for (let i = 0; i < cards.length; i++) {
+  //   cards[i].removeChild(cards[i].firstChild);
+  //   cards[i].innerHTML = '<i class="' + populateCard() + '"></i>';
+  // }
+  // hideCards();
 });
 
 /* Logic manage game state */
@@ -187,9 +181,6 @@ document
       } else if (moveCount.innerText == "32") {
         stars[1].style.display = "none";
         stars[4].style.display = "inline-block";
-      } else if (moveCount.innerHTML == "40") {
-        stars[0].style.display = "none";
-        stars[5].style.display = "inline-block";
       }
       numberOfCardsSelected++;
       flipCardZ(clickedItem);
@@ -249,12 +240,14 @@ function hasWon() {
     let popup = document.getElementsByClassName("congrats")[0];
     popup.insertAdjacentHTML(
       "afterend",
-      document.getElementsByClassName("move_count")[0].innerHTML
+      document.getElementsByClassName("timer_section")[0].innerHTML
     );
     popup.insertAdjacentHTML(
       "afterend",
-      document.getElementsByClassName("rating")[0].innerHTML
+      document.getElementsByClassName("move_count")[0].innerHTML
     );
+    let finalTime = document.getElementsByClassName("rating")[0];
+    popup.insertAdjacentHTML("afterend", finalTime.innerHTML);
     let overlay = document.getElementsByClassName("overlay")[0];
     overlay.style.display = "flex";
   }
