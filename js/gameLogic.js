@@ -12,7 +12,10 @@ let gamepad = "fa fa-gamepad";
 let iconMap = new Array(2, 2, 2, 2, 2, 2, 2, 2);
 let iconCount = 16;
 
+let numberOfMoves = 0;
+
 let numberOfCardsSelected = 0;
+let firstCardSelected = false;
 
 let stars = document.getElementsByClassName("fa-star");
 stars[5].style.display = "none";
@@ -92,17 +95,6 @@ function add() {
     }
   }
 
-  if (minutes === 1) {
-    stars[2].style.display = "none";
-    stars[3].style.display = "inline-block";
-  } else if (minutes === 2) {
-    stars[1].style.display = "none";
-    stars[4].style.display = "inline-block";
-  } else if (minutes > 2) {
-    stars[0].style.display = "none";
-    stars[5].style.display = "inline-block";
-  }
-
   timer.textContent =
     (hours ? (hours > 9 ? hours : "0" + hours) : "00") +
     ":" +
@@ -117,24 +109,17 @@ function timerFunc() {
   t = setTimeout(add, 1000);
 }
 
-timerFunc();
-
-// Logic for number of moves user makes
-let moveCount = document.getElementById("moves");
-
-let cardDeck = document.getElementsByClassName("deck")[0];
-
-cardDeck.addEventListener("click", function() {
-  let x = moveCount.innerText;
-  x++;
-  moveCount.innerText = x;
-});
-
 // Logic for refresh button
 let refreshButton = document.getElementsByClassName("refresh")[0];
 
 refreshButton.addEventListener("click", function() {
   //TODO: Reset stars
+  stars[5].style.display = "none";
+  stars[4].style.display = "none";
+  stars[3].style.display = "none";
+  stars[2].style.display = "inline-block";
+  stars[1].style.display = "inline-block";
+  stars[0].style.display = "inline-block";
 
   timer.textContent = "00:00:00";
   seconds = 0;
@@ -142,6 +127,8 @@ refreshButton.addEventListener("click", function() {
   hours = 0;
 
   moveCount.innerText = "0";
+
+  numberOfCardsSelected = 0;
 
   iconMap = new Array(2, 2, 2, 2, 2, 2, 2, 2);
   iconCount = 16;
@@ -171,6 +158,11 @@ function hideCards() {
 }
 hideCards();
 
+// Logic for number of moves user makes
+let moveCount = document.getElementById("moves");
+
+let cardDeck = document.getElementsByClassName("deck")[0];
+
 // Event listener logic for which card was clicked
 
 document
@@ -182,6 +174,23 @@ document
       clickedItem.style.visibility !== "visible" &&
       numberOfCardsSelected < 2
     ) {
+      if (firstCardSelected === false) {
+        timerFunc();
+        firstCardSelected = true;
+      }
+      let x = moveCount.innerText;
+      x++;
+      moveCount.innerText = x;
+      if (moveCount.innerText == "24") {
+        stars[2].style.display = "none";
+        stars[3].style.display = "inline-block";
+      } else if (moveCount.innerText == "32") {
+        stars[1].style.display = "none";
+        stars[4].style.display = "inline-block";
+      } else if (moveCount.innerHTML == "40") {
+        stars[0].style.display = "none";
+        stars[5].style.display = "inline-block";
+      }
       numberOfCardsSelected++;
       flipCardZ(clickedItem);
       clickedItem.style.backgroundColor = "wheat";
@@ -193,7 +202,6 @@ document
         cardTwoIndex = indexOfHTMLCollection(deckOfCardsList, clickedItem);
         let cardEquality = areEqual();
         setTimeout(leaveFlipped, 1000, cardEquality);
-        numberOfCardsSelected = 0;
       }
     }
   });
@@ -231,12 +239,24 @@ function leaveFlipped(equality) {
     successfulMoves++;
     hasWon();
   }
+  numberOfCardsSelected = 0;
 }
 
 // Function that determines if end of game has been reached.
 function hasWon() {
   if (successfulMoves === 8) {
-    document.getElementsByClassName("overlay")[0].style.display = "flex";
+    clearTimeout(t);
+    let popup = document.getElementsByClassName("congrats")[0];
+    popup.insertAdjacentHTML(
+      "afterend",
+      document.getElementsByClassName("move_count")[0].innerHTML
+    );
+    popup.insertAdjacentHTML(
+      "afterend",
+      document.getElementsByClassName("rating")[0].innerHTML
+    );
+    let overlay = document.getElementsByClassName("overlay")[0];
+    overlay.style.display = "flex";
   }
 }
 
